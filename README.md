@@ -66,7 +66,7 @@ class User(Entity):
 
 Defines the CRUD operations that any persistence adapter must implement.
 
-<<<python
+```python
 # core/interfaces.py
 from abc import ABC, abstractmethod
 from typing import List, Optional
@@ -92,13 +92,13 @@ class Repository(ABC):
     @abstractmethod
     def delete(self, id: int) -> bool:
         pass
->>>
+```
 
 ### 📌 CRUD Service (Use Cases)
 
 Encapsulates business logic, independent of any persistence mechanism.
 
-<<<python
+```python
 # core/use_cases.py
 from typing import List, Optional
 from .interfaces import Repository
@@ -122,7 +122,7 @@ class CRUDService:
 
     def delete_entity(self, id: int) -> bool:
         return self.repository.delete(id)
->>>
+```
 
 ---
 
@@ -132,7 +132,7 @@ class CRUDService:
 
 Implements the repository interface using SQLAlchemy.
 
-<<<python
+```python
 # adapters/repository_postgresql.py
 from typing import List, Optional
 from sqlalchemy.orm import Session
@@ -190,7 +190,7 @@ class PostgresUserRepository(Repository):
         self.session.delete(instance)
         self.session.commit()
         return True
->>>
+```
 
 ---
 
@@ -198,7 +198,7 @@ class PostgresUserRepository(Repository):
 
 Unit tests ensure all CRUD operations behave as expected.
 
-<<<python
+```python
 # tests/test_use_cases.py
 import pytest
 from core.entities import User
@@ -243,7 +243,7 @@ def test_create_user():
     created = service.create_entity(user)
     assert created.id is not None
     assert created.name == "Juan"
->>>
+```
 
 ---
 
@@ -253,7 +253,7 @@ This module is framework-independent. To expose CRUD functionality via an API, c
 
 Example API adapter using FastAPI:
 
-<<<python
+```python
 # adapters/api_adapter_example.py
 from fastapi import FastAPI, Depends
 from core.use_cases import CRUDService
@@ -274,7 +274,7 @@ def get_user(user_id: int):
 def create_user(name: str, email: str):
     user = User(id=None, name=name, email=email)
     return service.create_entity(user)
->>>
+```
 
 ---
 
