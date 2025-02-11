@@ -47,7 +47,7 @@ my_crud_module/
 
 Entities are plain data classes that represent core business objects.
 
-<<<python
+```python
 # core/entities.py
 from dataclasses import dataclass
 from typing import Optional
@@ -60,7 +60,7 @@ class Entity:
 class User(Entity):
     name: str = ""
     email: str = ""
->>>
+```
 
 ### 📌 Repository Interface (Ports)
 
