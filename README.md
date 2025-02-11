@@ -22,7 +22,9 @@ The project follows a modular structure:
 
 
 my_crud_module/
+
 ├── core/                      # Business logic & domain layer
+
 │   ├── __init__.py
 │   ├── entities.py            # Entity definitions (e.g., User, Product)
 │   ├── interfaces.py          # Repository interface (port)
