@@ -20,7 +20,7 @@ This repository provides a generic CRUD module built in Python using **Hexagonal
 
 The project follows a modular structure:
 
-<<<
+
 my_crud_module/
 ├── core/                      # Business logic & domain layer
 │   ├── __init__.py
@@ -37,7 +37,7 @@ my_crud_module/
 │   └── test_repository_postgresql.py  # (Optional) Integration tests
 ├── requirements.txt           # Dependencies (e.g., SQLAlchemy, pytest)
 └── README.md                  # Documentation file
->>>
+
 
 ---
 
