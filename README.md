@@ -1,41 +1,53 @@
+<<<markdown
 # My CRUD Module Template with Hexagonal Architecture and TDD
 
-This repository provides a generic CRUD module built in Python using Hexagonal Architecture and Test-Driven Development (TDD). It is designed to serve as a modular template for future projects, regardless of the specific web framework or technology stack. The core domain is independent of infrastructure details, making it reusable for various CRUD implementations (e.g., users, products, blogs, multimedia).
+This repository provides a generic CRUD module built in Python using **Hexagonal Architecture** and **Test-Driven Development (TDD)**. It is designed as a modular template that can be adapted to multiple web frameworks and technologies. The business logic is completely decoupled from the infrastructure, allowing you to integrate different databases, APIs, and front-end implementations effortlessly.
 
 ---
 
-## Project Structure
+## 📌 Features
 
-The repository is organized as follows:
+✅ **Hexagonal Architecture (Ports & Adapters)**  
+✅ **Completely decoupled business logic**  
+✅ **Framework-agnostic design** (can work with Django, Flask, FastAPI, etc.)  
+✅ **Supports PostgreSQL as a persistence adapter**  
+✅ **TDD-based approach with Pytest for high reliability**  
+✅ **Easily extendable for new entities and CRUD use cases**  
 
->>> 
+---
+
+## 📂 Project Structure
+
+The project follows a modular structure:
+
+<<<
 my_crud_module/
-├── core/                      # Domain and business logic
+├── core/                      # Business logic & domain layer
 │   ├── __init__.py
-│   ├── entities.py            # Generic entities (e.g., User, Product)
-│   ├── interfaces.py          # Ports: Repository interfaces and others
-│   └── use_cases.py           # Use cases / services implementing CRUD
-├── adapters/                  # Adapters for infrastructure (e.g., persistence, APIs)
+│   ├── entities.py            # Entity definitions (e.g., User, Product)
+│   ├── interfaces.py          # Repository interface (port)
+│   └── use_cases.py           # Business logic (CRUD services)
+├── adapters/                  # Infrastructure adapters
 │   ├── __init__.py
-│   ├── repository_postgresql.py  # PostgreSQL-specific adapter
-│   └── api_adapter_example.py     # (Optional) API adapter for web frameworks
-├── tests/                     # Automated tests (TDD)
+│   ├── repository_postgresql.py  # PostgreSQL adapter
+│   └── api_adapter_example.py     # (Optional) API adapter
+├── tests/                     # Unit tests for TDD
 │   ├── __init__.py
 │   ├── test_use_cases.py
-│   └── test_repository_postgresql.py  # (Optional) Integration tests for PostgreSQL adapter
+│   └── test_repository_postgresql.py  # (Optional) Integration tests
 ├── requirements.txt           # Dependencies (e.g., SQLAlchemy, pytest)
-└── README.md                  # This documentation file
+└── README.md                  # Documentation file
 >>>
 
 ---
 
-## Domain and Core
+## 🏗 Domain & Business Logic
 
-### Entities
+### 📌 Entities
 
-The entities are defined as plain data classes that represent the business objects. For example, a generic entity and a concrete User entity are defined as follows:
+Entities are plain data classes that represent core business objects.
 
->>>python
+<<<python
 # core/entities.py
 from dataclasses import dataclass
 from typing import Optional
@@ -50,11 +62,11 @@ class User(Entity):
     email: str = ""
 >>>
 
-### Repository Interface (Ports)
+### 📌 Repository Interface (Ports)
 
-The repository interface defines the minimal CRUD operations that any persistence adapter must implement.
+Defines the CRUD operations that any persistence adapter must implement.
 
->>>python
+<<<python
 # core/interfaces.py
 from abc import ABC, abstractmethod
 from typing import List, Optional
@@ -82,11 +94,11 @@ class Repository(ABC):
         pass
 >>>
 
-### Use Cases (CRUD Service)
+### 📌 CRUD Service (Use Cases)
 
-The CRUD service encapsulates the business logic and uses the repository interface for persistence.
+Encapsulates business logic, independent of any persistence mechanism.
 
->>>python
+<<<python
 # core/use_cases.py
 from typing import List, Optional
 from .interfaces import Repository
@@ -114,13 +126,13 @@ class CRUDService:
 
 ---
 
-## Adapters
+## 🔌 Adapters
 
-### PostgreSQL Adapter
+### 📌 PostgreSQL Adapter
 
-This adapter implements the repository interface using SQLAlchemy for PostgreSQL.
+Implements the repository interface using SQLAlchemy.
 
->>>python
+<<<python
 # adapters/repository_postgresql.py
 from typing import List, Optional
 from sqlalchemy.orm import Session
@@ -182,11 +194,11 @@ class PostgresUserRepository(Repository):
 
 ---
 
-## Testing (TDD)
+## 🧪 Testing with TDD
 
-Tests are written first to ensure that each CRUD operation works as expected. Below is an example using a fake repository for testing the core CRUD service.
+Unit tests ensure all CRUD operations behave as expected.
 
->>>python
+<<<python
 # tests/test_use_cases.py
 import pytest
 from core.entities import User
@@ -231,44 +243,17 @@ def test_create_user():
     created = service.create_entity(user)
     assert created.id is not None
     assert created.name == "Juan"
-
-def test_get_user():
-    repo = FakeUserRepository()
-    service = CRUDService(repo)
-    user = User(name="Juan", email="juan@example.com")
-    created = service.create_entity(user)
-    retrieved = service.get_entity(created.id)
-    assert retrieved == created
-
-def test_update_user():
-    repo = FakeUserRepository()
-    service = CRUDService(repo)
-    user = User(name="Juan", email="juan@example.com")
-    created = service.create_entity(user)
-    updated_user = User(name="Juan Updated", email="juan.updated@example.com")
-    service.update_entity(created.id, updated_user)
-    retrieved = service.get_entity(created.id)
-    assert retrieved.name == "Juan Updated"
-
-def test_delete_user():
-    repo = FakeUserRepository()
-    service = CRUDService(repo)
-    user = User(name="Juan", email="juan@example.com")
-    created = service.create_entity(user)
-    result = service.delete_entity(created.id)
-    assert result is True
-    assert service.get_entity(created.id) is None
 >>>
 
 ---
 
-## Integration with Web Frameworks
+## 🚀 Integration with Web Frameworks
 
-This core module is independent of any web framework. To integrate with a specific framework, create an adapter (for example, using FastAPI, Django, or Flask) that exposes the CRUD operations via an API.
+This module is framework-independent. To expose CRUD functionality via an API, create an adapter in your preferred framework (FastAPI, Django, Flask, etc.).
 
-Below is an example of an API adapter using FastAPI:
+Example API adapter using FastAPI:
 
->>>python
+<<<python
 # adapters/api_adapter_example.py
 from fastapi import FastAPI, Depends
 from core.use_cases import CRUDService
@@ -293,10 +278,14 @@ def create_user(name: str, email: str):
 
 ---
 
-## Conclusion
+## 📜 License
 
-This modular CRUD template, built with Hexagonal Architecture and TDD in Python, provides a robust and reusable foundation for developing web applications. It decouples the core business logic from infrastructure details, allowing you to easily integrate it into various projects with different technologies and frameworks.
+This project is open-source and free to use. Contributions are welcome!
 
-Feel free to extend this template by adding more entities, adapters, and tests as needed.
+---
 
-Happy coding!
+## 📌 Conclusion
+
+This CRUD module provides a **robust, reusable, and decoupled** foundation for web applications, leveraging **Hexagonal Architecture** and **TDD**. Feel free to extend it with additional entities, adapters, and tests!
+
+**Happy coding!** 🚀
